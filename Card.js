@@ -4,7 +4,8 @@ import { Pressable, Text, StyleSheet } from "react-native";
 
 export default function Card({ onPress, isTurnedOver, children }) {
     return (
-        <Pressable onPress={onPress} style={isTurnedOver ? styles.cardUp : styles.cardDown}>
+        <Pressable 
+        onPress={onPress} style={isTurnedOver ? styles.cardUp : styles.cardDown}>
             {isTurnedOver ? (
                 <Text style={styles.text}>{children}</Text>
                 ) : (
@@ -20,10 +21,10 @@ const styles = StyleSheet.create({
         height: 100,
         margin: 10,
         borderWidth: 10,        
-        borderColor: "#334155",
+        borderColor: "#577db5",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#1e293b",
+        backgroundColor: "#1b3d75",
         borderRadius: 25,         
     },
     cardDown: {
@@ -31,14 +32,14 @@ const styles = StyleSheet.create({
         height: 100,
         margin: 10,
         borderWidth: 10,
-        borderColor: "#334155",
+        borderColor: "#566882",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#1e293b",
+        backgroundColor: "#1f314f",
         borderRadius: 25,         
     },
     text: {
         fontSize: 46,
-        color: "#334155",
+        color: "#566882",
     }
 });

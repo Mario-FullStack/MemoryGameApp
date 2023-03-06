@@ -2,10 +2,11 @@ import * as React from "react";
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
 import Card from './Card';
+import * as Haptics from 'expo-haptics';
 
 const cards = [
   "🐷",
-  "🪝",
+  "🌎",
   "⚛️",
   "🔑",
   "🥕",
@@ -20,12 +21,20 @@ export default function App() {
 
   React.useEffect(() => {
     if (selectedCards.length < 2) return;
-
+    
     if (board[selectedCards[0]] === board[selectedCards[1]]) {
       setMatchCards([...matchCards, ...selectedCards]);
+      Haptics.notificationAsync(
+        Haptics.NotificationFeedbackType.Success
+      )
+      setScore(score + 2);
       setSelectedCards([]);
     } else {
-      const timeoutId = setTimeout(() => setSelectedCards([]), 1000);
+      const timeoutId = setTimeout(() => setSelectedCards([]), 500);
+      Haptics.notificationAsync(
+        Haptics.NotificationFeedbackType.Warning
+      );
+      setScore(score - 1);
       return () => clearTimeout(timeoutId);
     }
   }, [selectedCards]);
@@ -33,14 +42,14 @@ export default function App() {
   const handleTapCard = (index) => {
     if (selectedCards.length >= 2 || selectedCards.includes(index)) return;
     setSelectedCards([...selectedCards, index]);
-    setScore(score + 1);
   };
 
   const didPlayerWin = () => matchCards.length === board.length;
 
   const resetGame = () => {
     setMatchCards([]);
-    setScore(score + 1);
+    setScore([0]);
+    setBoard(shuffle([...cards, ...cards]));
   };
 
   return (
@@ -61,6 +70,7 @@ export default function App() {
         })}
       </View>
       {didPlayerWin() && <Button onPress={resetGame} title="reset" />}
+      <Text style={styles.title2}>(2 puntos por cartas iguales, -1 punto si no aciertas)</Text>
       <StatusBar style="light" />
     </View>
   );
@@ -69,7 +79,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0f172a',
+    backgroundColor: '#010b24',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -77,6 +87,10 @@ const styles = StyleSheet.create({
     fontSize: 32,
     color: "white",
     fontWeight: "900",
+  },
+  title2: {
+    fontSize: 14,
+    color: "white",
   },
   board: {
     flexDirection: "row",
